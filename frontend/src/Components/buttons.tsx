@@ -9,7 +9,7 @@ const FilterBtn = ({text, setFilter, activeFilter}:FilterBtnProps) => {
     return(
         <button
       onClick={() => setFilter(text)}
-      className={`font-semibold cursor-pointer px-3 py-1 rounded-md transition
+      className={`font-semibold px-8 cursor-pointer max-sm:px-4 py-1 rounded-md transition
         ${
           isActive
             ? "bg-indigo-600 text-white"

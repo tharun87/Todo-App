@@ -29,14 +29,14 @@ const TasksOverview: React.FC<Counts> = ({ total, pending, completed }) => {
   ];
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-row sm:flex-col gap-3 max-sm:mt-4 mt-8">
       {stats.map((stat) => (
         <div
           key={stat.label}
           className="flex flex-col items-center justify-center bg-white px-3 py-2 rounded-[10px]"
         >
           <div
-            className={`size-14 flex items-center justify-center rounded-full ${stat.bg}`}
+            className={`size-12 max-sm:size-10 max-sm:py-3 flex items-center justify-center rounded-full ${stat.bg}`}
           >
             <span className={`text-2xl font-bold ${stat.text}`}>
               {stat.value}

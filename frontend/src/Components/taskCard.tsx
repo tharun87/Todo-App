@@ -21,7 +21,7 @@ const TaskCard: React.FC<TaskProps> = ({
   const dispatch = useDispatch<AppDispatch>();
   return (
     <>
-      <div className="flex items-center justify-between border border-gray-200 rounded-lg p-3 bg-gray-50 text-xl">
+      <div className="flex items-center justify-between border border-gray-200 rounded-lg p-3 bg-gray-50 text-xl max-sm:w-11/12">
         <div className="flex gap-4 items-center">
           <button
             onClick={() => dispatch(toggleTodo(id))}
@@ -46,7 +46,7 @@ const TaskCard: React.FC<TaskProps> = ({
           </p>
         </div>
 
-        <div className="flex gap-8 mr-4">
+        <div className="flex max-sm:gap-3 max-sm:mr-1 gap-8 mr-4">
           <button
             onClick={() => {
               setId(id);

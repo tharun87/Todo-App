@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
+import todoRoutes from "./routes/todoRoutes"
 
 dotenv.config();
 
@@ -28,8 +29,11 @@ const connectDB = async () => {
 connectDB();
 
 app.get("/",(req,res)=>{
+    res.json({message: "API is working correctly"})
     res.send("Beckedn API is running")
 })
+
+app.use("/api/todos", todoRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

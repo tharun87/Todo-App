@@ -3,14 +3,19 @@ import { FiPlus, FiRefreshCw } from "react-icons/fi";
 import FilterBtn from "./buttons";
 import TaskCard from "./taskCard";
 import { useDispatch, useSelector } from "react-redux";
-import { addTodo, clearTodos, editTodo } from "../redux_files/todoSlice";
 import type { RootState, AppDispatch } from "../redux_files/store";
 import { useEffect, useState } from "react";
 import { FaRegCircleCheck } from "react-icons/fa6";
-import TasksOverview from "./TasksOverview";
+import TasksOverview, { MobileMenu } from "./TasksOverview";
+import {
+  addTodo,
+  fetchTodos,
+  clearTodos,
+  editTodo,
+} from "../redux_files/todoSlice";
 
 const TodoApp = () => {
-  const todos = useSelector((state: RootState) => state.todo);
+  const { todos, loading } = useSelector((state: RootState) => state.todo);
   const dispatch = useDispatch<AppDispatch>();
   const [task, setTask] = useState<string>("");
   const [id, setId] = useState<string | null>(null);
@@ -39,9 +44,10 @@ const TodoApp = () => {
     }
     setTask("");
   };
+
   useEffect(() => {
-    localStorage.setItem("todo", JSON.stringify(todos));
-  }, [todos]);
+    dispatch(fetchTodos());
+  }, [dispatch]);
 
   return (
     <div className="max-w-full mb-8">
@@ -49,11 +55,18 @@ const TodoApp = () => {
         <div className="flex flex-col">
           <HeaderComponent />
           <div className="flex sm:flex-row sm:gap-4 flex-col items-center">
-            <TasksOverview
+            <MobileMenu
               total={todos.length}
               pending={pendingTodos.length}
               completed={completedTodos.length}
             />
+            <div className="hidden sm:block">
+              <TasksOverview
+                total={todos.length}
+                pending={pendingTodos.length}
+                completed={completedTodos.length}
+              />
+            </div>
             <main className="w-full md:w-150 px-2">
               {/* Input Field */}
               <div className="flex gap-4 w-full mt-5 p-5 bg-[linear-gradient(to_right,#7c40ec_0%,#a76bf7_100%)] border rounded-tl-[20px] rounded-tr-[20px] border-none">
@@ -80,6 +93,7 @@ const TodoApp = () => {
                   placeholder="What needs to be done?"
                 />
                 <button
+                disabled={loading}
                   className="flex max-sm:text-[14px] max-sm:px-2 cursor-pointer font-medium items-center px-3 bg-white rounded-md text-blue-600"
                   onClick={handleSubmit}
                 >
@@ -134,23 +148,28 @@ const TodoApp = () => {
                   </button>
                 </div>
                 {/* Todo List */}
-                <div className="pt-8 pb-8 px-4 flex flex-col max-h-60 gap-3 overflow-y-scroll max-sm:items-center">
-                  {todos.length === 0 && (
+                <div className="pt-8 pb-8 px-4 flex flex-col min-h-55 max-h-60 gap-3 overflow-y-scroll max-sm:items-center">
+                  {filteredTodos.length === 0 && (
                     <div className="flex flex-col items-center gap-1">
                       <div className="p-4 bg-blue-100 rounded-full">
                         <FaRegCircleCheck className="text-4xl text-blue-600" />
                       </div>
-                      <p className="font-bold text-gray-700">No tasks added</p>
+                      <p className="font-bold text-gray-700">No tasks found</p>
                       <p className="mt-2 text-gray-600">
                         Add your first task to get started!
                       </p>
                     </div>
                   )}
+                  {loading && (
+                    <div className="flex justify-center py-6">
+                      <div className="w-6 h-6 border-4 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+                  )}
                   {filteredTodos.map((todo) => (
                     <TaskCard
-                      key={todo.id}
-                      id={todo.id}
-                      text={todo.task}
+                      key={todo._id}
+                      id={todo._id}
+                      text={todo.text}
                       completed={todo.completed}
                       setId={setId}
                       setTask={setTask}

@@ -1,7 +1,7 @@
 import { FiEdit2, FiTrash2, FiCheck } from "react-icons/fi";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../redux_files/store";
-import { removeTodo, toggleTodo } from "../redux_files/todoSlice";
+import { deleteTodo, toggleTodo } from "../redux_files/todoSlice";
 
 export type TaskProps = {
   id: string;
@@ -58,7 +58,7 @@ const TaskCard: React.FC<TaskProps> = ({
             <FiEdit2 />
           </button>
           <button
-            onClick={() => dispatch(removeTodo(id))}
+            onClick={() => dispatch(deleteTodo(id))}
             className="text-red-500 cursor-pointer"
           >
             <FiTrash2 />

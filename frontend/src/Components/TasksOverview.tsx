@@ -1,9 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
+import { MdMenu } from "react-icons/md";
 
 export type Counts = {
   total: number;
   pending: number;
   completed: number;
+};
+
+export const MobileMenu: React.FC<Counts> = ({total, pending, completed}) => {
+  const [open, setOpen] = useState<boolean>(false);
+
+  return (
+    <div className="sm:hidden">
+      {/* Hamburger button */}
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex flex-col justify-center items-center mt-3"
+        aria-label="Toggle menu"
+      >
+        <div className="flex items-center justify-center gap-3"><MdMenu className="text-2xl text-amber-500"/><span className="text-orange-500">Tasks Overview</span></div>
+      </button>
+
+      {/* Dropdown menu */}
+      {open && (
+        <div className="mt-3 bg-white shadow-md rounded-lg p-4">
+          {/* Put your mobile content here */}
+          <TasksOverview total={total} pending={pending} completed={completed}/>
+        </div>
+      )}
+    </div>
+  );
 };
 
 const TasksOverview: React.FC<Counts> = ({ total, pending, completed }) => {
@@ -29,11 +55,11 @@ const TasksOverview: React.FC<Counts> = ({ total, pending, completed }) => {
   ];
 
   return (
-    <div className="flex flex-row sm:flex-col gap-3 max-sm:mt-4 mt-8">
+    <div className="flex flex-row sm:flex-col gap-3 max-sm:mt-0 mt-8">
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className="flex flex-col items-center justify-center bg-white px-3 py-2 rounded-[10px]"
+          className="flex flex-col items-center justify-center bg-white px-3 max-sm:py-1 border border-amber-300 py-3 rounded-[10px]"
         >
           <div
             className={`size-12 max-sm:size-10 max-sm:py-3 flex items-center justify-center rounded-full ${stat.bg}`}

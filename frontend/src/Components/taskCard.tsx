@@ -34,7 +34,7 @@ const TaskCard: React.FC<TaskProps> = ({
                   : "border-gray-400 hover:scale-110"
               }`}
             >
-              {completed && <FiCheck className="text-green-500 size-4" />}
+              {completed && <FiCheck className="text-green-600 size-4" />}
             </div>
           </button>
           <p
